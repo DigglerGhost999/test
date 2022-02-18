@@ -7,4 +7,5 @@ const pool = new Pool({
     max: 10
 })
 
+
 module.exports = pool;
