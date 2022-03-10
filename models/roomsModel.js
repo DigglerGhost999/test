@@ -1,4 +1,5 @@
 var pool = require('./connection.js')
+var beats = { rock: 'scissors', scissors: 'paper', paper: 'rock' };
 
 module.exports.getAllRooms = async function() {
   try {
@@ -10,7 +11,7 @@ module.exports.getAllRooms = async function() {
     console.log(err);
     return { status: 500, result: err};
   }
-}  
+}
 module.exports.getRoomById = async function (id) {
   try {
     let sql = "Select * from room where roo_id = $1";
@@ -26,11 +27,13 @@ module.exports.getRoomById = async function (id) {
     return { status: 500, result: err };
   }
 }
-
 module.exports.play = async function (id, value) {
   try {
     if (!beats[value]) {
       return { status: 400, result: { msg: "Card value is not valid (rock,paper,scissors)" } };
+    }
+    if (!parseInt(id)){
+      return { status: 400, result: { msg: "Room id is not a number (integer)"} }
     }
     let sql = "Select * from room where roo_id = $1";
     let result = await pool.query(sql, [id]);
@@ -68,7 +71,6 @@ module.exports.play = async function (id, value) {
     return { status: 500, result: err };
   }
 }
-
 module.exports.getRoomByNameOrTopCard = async function (parameters) {
   try {
     if (!parameters.name && !parameters.topcard) {
@@ -84,11 +86,13 @@ module.exports.getRoomByNameOrTopCard = async function (parameters) {
       nparam++;
     }
     if (parameters.topcard) {
-      if (parameters.name) sql+=" AND"
+      if (nparam > 1) sql+=" AND"
       sql += ` roo_topcard LIKE $${nparam}`;
       values.push(parameters.topcard);
       nparam++;
     }
+    console.log(sql)
+    console.log(values)
     let result = await pool.query(sql, values);
     let rooms = result.rows;
     return { status: 200, result: rooms };
@@ -96,4 +100,4 @@ module.exports.getRoomByNameOrTopCard = async function (parameters) {
     console.log(err);
     return { status: 500, result: err };
   }
-} 
+}  

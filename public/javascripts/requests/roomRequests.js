@@ -12,7 +12,8 @@ async function getRoom(roomId) {
         // Treat 500 errors here
         console.log(err);
     }
-}           
+}
+
 async function play(roomId, card) {
     try {
         const response = await fetch(`/api/rooms/${roomId}/plays`,
