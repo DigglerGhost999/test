@@ -12,7 +12,7 @@ async function getRoom(roomId) {
         // Treat 500 errors here
         console.log(err);
     }
-}
+}           
 
 async function play(roomId, card) {
     try {
@@ -36,3 +36,4 @@ async function play(roomId, card) {
         console.log(err);
     }
 }
+

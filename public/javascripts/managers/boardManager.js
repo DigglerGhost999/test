@@ -1,4 +1,4 @@
-const playValues = [];
+var playValues=[];
 
 class BoardManager {
     
@@ -18,7 +18,7 @@ class BoardManager {
             cardImgs[playValue] = loadImage('./assets/'+playValue+'.png');
         }
         Card.initImgs(cardImgs);
-    } 
+    }
     async initBoard() {
         let room = await getRoom(this.room);
         this.board = new Board(this.width,this.height,this.x,this.y,
